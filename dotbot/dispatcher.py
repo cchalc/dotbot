@@ -23,9 +23,6 @@ class Dispatcher(object):
         success = True
         for task in tasks:
             for action in task:
-                if action == 'meta':
-                    self._handle_metadata(task['meta'])
-                    continue
                 handled = False
                 for plugin in self._plugins:
                     if plugin.can_handle(action):
@@ -44,13 +41,6 @@ class Dispatcher(object):
     def _load_plugins(self):
         self._plugins = [plugin(self._base_directory)
             for plugin in Executor.__subclasses__()]
-
-    def _handle_metadata(self, metadata):
-        print
-        if 'title' in metadata:
-            self._log.warning(metadata['title'])
-        if 'description' in metadata:
-            self._log.info(' ' + metadata['description'])
 
 class DispatchError(Exception):
     pass
